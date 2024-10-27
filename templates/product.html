@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>{{ product.name }}</h2>
+<img src="{{ product.image }}" alt="{{ product.name }}">
+<p>Price: ${{ product.price }}</p>
+
+<h3>Leave a Review</h3>
+<textarea id="review-text" placeholder="Write your review here..." required></textarea>
+<button id="submit-review">Submit Review</button>
+
+<h3>Reviews</h3>
+<div class="reviews" id="reviews">
+    {% for review in product.reviews %}
+        <div class="review">
+            <p>{{ review.text }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+    const submitButton = document.getElementById('submit-review');
+    const reviewText = document.getElementById('review-text');
+
+    submitButton.addEventListener('click', () => {
+        const review = reviewText.value;
+
+        if (review) {
+            fetch('{{ url_for("product", product_id=product.id) }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ review }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Add new review to the reviews section
+                const newReview = document.createElement('div');
+                newReview.className = 'review';
+                newReview.innerHTML = `<p>${data.text}</p>`;
+                reviewsDiv.prepend(newReview);
+                reviewText.value = ''; // Clear the text area
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+</script>
+{% endblock %}

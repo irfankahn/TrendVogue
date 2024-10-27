@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Featured Products</h2>
+
+<form method="GET" class="search-bar" action="{{ url_for('index') }}">
+    <input type="text" name="search" placeholder="Search for products..." required>
+    <button type="submit">Search</button>
+</form>
+
+<h3>Men</h3>
+<div class="product-grid">
+    {% for product in products %}
+        {% if product.category == 'men' %}
+            <div class="product-card">
+                <a href="{{ url_for('product', product_id=product.id) }}">
+                    <img src="{{ product.image }}" alt="{{ product.name }}">
+                    <h3>{{ product.name }}</h3>
+                    <p>$ {{ product.price }}</p>
+                </a>
+                <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="post" style="display:inline;">
+                    <button type="submit" class="cart-button">Add to Cart</button>
+                </form>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<h3>Women</h3>
+<div class="product-grid">
+    {% for product in products %}
+        {% if product.category == 'women' %}
+            <div class="product-card">
+                <a href="{{ url_for('product', product_id=product.id) }}">
+                    <img src="{{ product.image }}" alt="{{ product.name }}">
+                    <h3>{{ product.name }}</h3>
+                    <p>$ {{ product.price }}</p>
+                </a>
+                <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="post" style="display:inline;">
+                    <button type="submit" class="cart-button">Add to Cart</button>
+                </form>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}
