@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify, flash
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Replace with a secure key
-
+app.secret_key = 'your_secret_key'  
 
 # Sample product data with reviews
 products = [
